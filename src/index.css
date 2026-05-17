@@ -1,0 +1,150 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-background: oklch(0.985 0 0);
+  --color-foreground: oklch(0.18 0.01 280);
+
+  --color-surface: oklch(1 0 0);
+  --color-surface-muted: oklch(0.965 0.005 280);
+  --color-surface-elevated: oklch(1 0 0);
+
+  --color-border: oklch(0.92 0.005 280);
+  --color-border-strong: oklch(0.85 0.008 280);
+
+  --color-text: oklch(0.18 0.01 280);
+  --color-text-muted: oklch(0.5 0.01 280);
+  --color-text-subtle: oklch(0.65 0.008 280);
+
+  --color-primary: oklch(0.55 0.2 285);
+  --color-primary-hover: oklch(0.48 0.22 285);
+  --color-primary-foreground: oklch(0.99 0 0);
+  --color-primary-soft: oklch(0.96 0.03 285);
+
+  --color-accent: oklch(0.72 0.15 195);
+  --color-accent-foreground: oklch(0.15 0.02 195);
+
+  --color-success: oklch(0.62 0.16 150);
+  --color-success-soft: oklch(0.95 0.05 150);
+  --color-success-foreground: oklch(0.25 0.1 150);
+
+  --color-warning: oklch(0.78 0.15 75);
+  --color-warning-soft: oklch(0.96 0.06 85);
+  --color-warning-foreground: oklch(0.35 0.12 65);
+
+  --color-danger: oklch(0.62 0.22 25);
+  --color-danger-soft: oklch(0.96 0.04 25);
+  --color-danger-foreground: oklch(0.32 0.18 25);
+
+  --color-info: oklch(0.65 0.15 240);
+  --color-info-soft: oklch(0.96 0.04 240);
+  --color-info-foreground: oklch(0.32 0.16 240);
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --text-display-2xl: 3rem;
+  --text-display-xl: 2.25rem;
+  --text-display-lg: 1.75rem;
+  --text-heading-lg: 1.25rem;
+  --text-heading-md: 1.0625rem;
+  --text-body-lg: 1rem;
+  --text-body-md: 0.9375rem;
+  --text-body-sm: 0.8125rem;
+  --text-label: 0.75rem;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --tracking-display: -0.02em;
+  --tracking-heading: -0.01em;
+  --tracking-body: 0em;
+  --tracking-label: 0.04em;
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 0.875rem;
+  --radius-xl: 1.25rem;
+  --radius-pill: 9999px;
+
+  --shadow-card: 0 1px 2px rgb(15 15 30 / 0.04), 0 1px 6px rgb(15 15 30 / 0.04);
+  --shadow-elevated: 0 4px 14px rgb(15 15 30 / 0.06), 0 2px 4px rgb(15 15 30 / 0.04);
+  --shadow-floating: 0 12px 28px rgb(15 15 30 / 0.1), 0 4px 10px rgb(15 15 30 / 0.06);
+  --shadow-focus-ring: 0 0 0 3px oklch(0.55 0.2 285 / 0.25);
+
+  --space-gutter-sm: 0.75rem;
+  --space-gutter-md: 1.25rem;
+  --space-gutter-lg: 2rem;
+}
+
+@layer base {
+  .dark {
+    --color-background: oklch(0.16 0.012 285);
+    --color-foreground: oklch(0.96 0.005 285);
+
+    --color-surface: oklch(0.21 0.014 285);
+    --color-surface-muted: oklch(0.185 0.012 285);
+    --color-surface-elevated: oklch(0.245 0.015 285);
+
+    --color-border: oklch(0.3 0.012 285);
+    --color-border-strong: oklch(0.4 0.015 285);
+
+    --color-text: oklch(0.96 0.005 285);
+    --color-text-muted: oklch(0.7 0.01 285);
+    --color-text-subtle: oklch(0.55 0.012 285);
+
+    --color-primary: oklch(0.72 0.18 285);
+    --color-primary-hover: oklch(0.78 0.16 285);
+    --color-primary-foreground: oklch(0.15 0.02 285);
+    --color-primary-soft: oklch(0.3 0.08 285);
+
+    --color-accent: oklch(0.78 0.14 195);
+    --color-accent-foreground: oklch(0.15 0.02 195);
+
+    --color-success: oklch(0.72 0.16 150);
+    --color-success-soft: oklch(0.28 0.06 150);
+    --color-success-foreground: oklch(0.88 0.12 150);
+
+    --color-warning: oklch(0.82 0.15 75);
+    --color-warning-soft: oklch(0.3 0.07 75);
+    --color-warning-foreground: oklch(0.92 0.13 75);
+
+    --color-danger: oklch(0.72 0.2 25);
+    --color-danger-soft: oklch(0.3 0.08 25);
+    --color-danger-foreground: oklch(0.92 0.14 25);
+
+    --color-info: oklch(0.72 0.15 240);
+    --color-info-soft: oklch(0.28 0.08 240);
+    --color-info-foreground: oklch(0.9 0.12 240);
+
+    --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3), 0 1px 6px rgb(0 0 0 / 0.25);
+    --shadow-elevated: 0 4px 14px rgb(0 0 0 / 0.4), 0 2px 4px rgb(0 0 0 / 0.3);
+    --shadow-floating: 0 12px 28px rgb(0 0 0 / 0.5), 0 4px 10px rgb(0 0 0 / 0.35);
+    --shadow-focus-ring: 0 0 0 3px oklch(0.72 0.18 285 / 0.35);
+  }
+
+  html, body, #root {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-background);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-md);
+    line-height: 1.5;
+    letter-spacing: var(--tracking-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+}
