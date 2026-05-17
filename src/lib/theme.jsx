@@ -1,59 +1,71 @@
 import { createContext, useContext, useEffect, useState, useCallback } from 'react'
 
 const STORAGE_KEY = 'sophie-finance-theme'
-
 const ThemeContext = createContext(null)
 
-function getInitialPreference() {
-  if (typeof window === 'undefined') return 'system'
-  const stored = window.localStorage.getItem(STORAGE_KEY)
-  if (stored === 'light' || stored === 'dark' || stored === 'system') return stored
-  return 'system'
-}
-
 function getSystemTheme() {
-  if (typeof window === 'undefined') return 'light'
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 }
 
-export function ThemeProvider({ children }) {
-  const [preference, setPreference] = useState(getInitialPreference)
-  const [systemTheme, setSystemTheme] = useState(getSystemTheme)
+function readDomTheme() {
+  return document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+}
 
-  const resolvedTheme = preference === 'system' ? systemTheme : preference
+function isExternallyManaged() {
+  return document.documentElement.hasAttribute('data-soffi-theme')
+}
+
+export function ThemeProvider({ children }) {
+  const [resolvedTheme, setResolvedTheme] = useState(() => {
+    if (typeof document === 'undefined') return 'light'
+    return readDomTheme()
+  })
+
+  useEffect(() => {
+    if (!isExternallyManaged()) {
+      const stored = window.localStorage.getItem(STORAGE_KEY)
+      const initial = stored === 'dark' || stored === 'light' ? stored : getSystemTheme()
+      document.documentElement.classList.toggle('dark', initial === 'dark')
+    }
+    setResolvedTheme(readDomTheme())
+  }, [])
+
+  useEffect(() => {
+    const root = document.documentElement
+    const observer = new MutationObserver(() => setResolvedTheme(readDomTheme()))
+    observer.observe(root, { attributes: true, attributeFilter: ['class', 'data-soffi-theme'] })
+    return () => observer.disconnect()
+  }, [])
 
   useEffect(() => {
     const media = window.matchMedia('(prefers-color-scheme: dark)')
-    const onChange = (event) => setSystemTheme(event.matches ? 'dark' : 'light')
+    const onChange = (event) => {
+      if (isExternallyManaged()) return
+      const stored = window.localStorage.getItem(STORAGE_KEY)
+      if (stored === 'dark' || stored === 'light') return
+      document.documentElement.classList.toggle('dark', event.matches)
+    }
     media.addEventListener('change', onChange)
     return () => media.removeEventListener('change', onChange)
   }, [])
 
   useEffect(() => {
-    const root = document.documentElement
-    root.classList.toggle('dark', resolvedTheme === 'dark')
-    root.style.colorScheme = resolvedTheme
+    document.documentElement.style.colorScheme = resolvedTheme
   }, [resolvedTheme])
 
-  useEffect(() => {
-    if (preference === 'system') {
-      window.localStorage.removeItem(STORAGE_KEY)
-    } else {
-      window.localStorage.setItem(STORAGE_KEY, preference)
-    }
-  }, [preference])
-
-  const setTheme = useCallback((next) => setPreference(next), [])
-
   const toggleTheme = useCallback(() => {
-    setPreference((prev) => {
-      const current = prev === 'system' ? getSystemTheme() : prev
-      return current === 'dark' ? 'light' : 'dark'
-    })
+    const next = readDomTheme() === 'dark' ? 'light' : 'dark'
+    document.documentElement.classList.toggle('dark', next === 'dark')
+    window.localStorage.setItem(STORAGE_KEY, next)
+  }, [])
+
+  const setTheme = useCallback((theme) => {
+    document.documentElement.classList.toggle('dark', theme === 'dark')
+    window.localStorage.setItem(STORAGE_KEY, theme)
   }, [])
 
   return (
-    <ThemeContext.Provider value={{ preference, resolvedTheme, setTheme, toggleTheme }}>
+    <ThemeContext.Provider value={{ resolvedTheme, toggleTheme, setTheme }}>
       {children}
     </ThemeContext.Provider>
   )
