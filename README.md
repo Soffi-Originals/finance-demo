@@ -1,8 +1,6 @@
 # Northwind — Personal Finance Demo
 
-A polished one-page personal finance dashboard built as a demo app for the **Sophie** runtime editor.
-
-Vibe-code, fork, and edit it in-browser. This repo is intentionally structured so every color, font size, radius, shadow, spacing, and component variant is editable at runtime without touching the source.
+A polished one-page personal finance dashboard built as a demo app for Soffi Orginals community.
 
 ## Stack
 
